@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile_local
+      args:
+          - FRONTEND_GITLAB_PACKAGE_REGISTRY_TOKEN=${FRONTEND_GITLAB_PACKAGE_REGISTRY_TOKEN}
+    ports:
+      - 3002:3000
+      - 9229:9229
+      - 8404:8404
+    environment:
+      DATABASE_URL: postgresql://user:password@postgres:5432/app
+    depends_on:
+      - postgres
+    volumes:
+      - ./src:/app/src
+      - ./prisma:/app/prisma
+      - ./node_modules/.prisma/client:/app/node_modules/.prisma/client
+      - ./.env:/app/.env
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+
+  postgres:
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=app
+    ports:
+      - 5432:5432
