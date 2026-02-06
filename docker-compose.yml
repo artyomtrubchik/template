@@ -3,8 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_local
-      args:
-          - FRONTEND_GITLAB_PACKAGE_REGISTRY_TOKEN=${FRONTEND_GITLAB_PACKAGE_REGISTRY_TOKEN}
     ports:
       - 3002:3000
       - 9229:9229
